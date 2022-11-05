@@ -101,7 +101,7 @@ export const asyncRoutes = [
         path: '/collegeList',
         name: 'collegeList',
         component: () => import('@/views/college/collegeList'),
-        meta: { title: '用户管理', icon: 'table' }
+        meta: { title: '学院管理', icon: 'table' }
       },
       {
         path: '/majorList',

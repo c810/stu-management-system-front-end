@@ -17,8 +17,8 @@
         <el-input v-model="listPara.phone" placeholder="请输入电话号码"/>
       </el-form-item>
       <el-form-item>
-        <el-button icon="el-icon-search" @click="searchBtn">查询</el-button>
-        <el-button icon="el-icon-close" style="color: #FF7670;" @click="resetBtn">重置</el-button>
+        <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
+        <el-button icon="el-icon-close" style="color: #FF7670;border-color: #FF7670;" @click="resetBtn">重置</el-button>
         <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
@@ -68,8 +68,8 @@
           size: 尺寸
         -->
         <el-form
-          :model="addModel"
           ref="addRef"
+          :model="addModel"
           :rules="rules"
           label-width="80px"
           size="small"
@@ -82,19 +82,19 @@
             <el-col :span="12" :offset="0">
               <!-- 普通div -->
               <el-form-item prop="nickName" label="姓名">
-                <el-input v-model="addModel.nickName"></el-input>
+                <el-input v-model="addModel.nickName"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
               <el-form-item prop="phone" label="电话">
-                <el-input v-model="addModel.phone"></el-input>
+                <el-input v-model="addModel.phone"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
               <el-form-item label="邮箱">
-                <el-input v-model="addModel.email"></el-input>
+                <el-input v-model="addModel.email"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
@@ -108,13 +108,28 @@
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="username" label="账户">
-                <el-input v-model="addModel.username"></el-input>
+              <el-form-item prop="roleId" label="角色">
+                <el-select v-model="addModel.roleId" placeholder="请选择角色">
+                  <el-option
+                    v-for="item in roleList"
+                    :key="item.roleId"
+                    :label="item.roleName"
+                    :value="item.roleId"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </el-col>
+            <el-col :span="12" :offset="0">
+              <el-form-item prop="username" label="账户">
+                <el-input v-model="addModel.username"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
             <el-col v-if="addModel.type === '0'" :span="12" :offset="0">
               <el-form-item prop="password" label="密码">
-                <el-input v-model="addModel.password"></el-input>
+                <el-input v-model="addModel.password"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -126,7 +141,7 @@
 
 <script>
 // 引入获取用户列表
-import { getListApi, editUserApi, addUserApi, deleteUserApi } from '@/api/user'
+import { getListApi, editUserApi, addUserApi, deleteUserApi, getRoleListApi, getRoleApi } from '@/api/user'
 // 引入弹框组件
 import SysDialog from '@/components/Dialog/SysDialog'
 
@@ -139,6 +154,13 @@ export default {
     return {
       // 表单验证规则
       rules: {
+        roleId: [
+          {
+            trigger: 'blur',
+            required: true,
+            message: '请选择角色'
+          }
+        ],
         nickName: [
           {
             // trigger: 'change', // 改变时再验证
@@ -178,6 +200,7 @@ export default {
       },
       // 表单绑定的数据
       addModel: {
+        roleId: '',
         type: '', // 0新增,1编辑
         userId: '',
         nickName: '',
@@ -192,11 +215,11 @@ export default {
         title: '',
         visible: false,
         width: 630,
-        height: 180
+        height: 220
       },
       // 定义表格的高度
       tableHeight: 0,
-      // 列表查询的参数
+      // 列表搜索的参数
       listPara: {
         nickName: '',
         phone: '',
@@ -205,7 +228,9 @@ export default {
         total: 0
       },
       // 表格的数据
-      tableData: []
+      tableData: [],
+      // 角色列表
+      roleList: []
     }
   },
   mounted() {
@@ -216,12 +241,20 @@ export default {
   },
   created() {
     this.getList()
+    this.getRoleList()
   },
   methods: {
+    // 获取角色列表
+    async getRoleList() {
+      const res = await getRoleListApi()
+      if (res && res.code === 200) {
+        this.roleList = res.data
+      }
+    },
     // 获取列表
     async getList() {
       const res = await getListApi(this.listPara)
-      console.log('查询列表')
+      console.log('搜索列表')
       console.log(res)
       if (res && res.code === 200) {
         this.tableData = res.data.records
@@ -254,7 +287,7 @@ export default {
         }
       })
     },
-    // 查询按钮
+    // 搜索按钮
     searchBtn() {
       this.getList()
     },
@@ -274,15 +307,20 @@ export default {
       this.addModel.type = '0'
     },
     // 编辑按钮
-    editBtn(row) {
+    async editBtn(row) {
       this.dialog.title = '编辑用户'
       this.dialog.visible = true
-      // 清空表单
+      // 清空表单+
       this.$resetForm('addRef', this.addModel)
       // 把当前要编辑的数据复制到表单绑定的数据域
       this.$objCopy(row, this.addModel)
       // 设为编辑
       this.addModel.type = '1'
+      // 获取角色
+      const res = await getRoleApi({ userId: row.userId })
+      if (res && res.code === 200 && res.data) {
+        this.addModel.roleId = res.data.roleId
+      }
     },
     // 删除按钮
     async deleteBtn(row) {

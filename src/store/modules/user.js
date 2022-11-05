@@ -1,5 +1,5 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { logout, getInfo, loginApi } from '@/api/user'
+import { getToken, setToken, removeToken, setUserId } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -34,11 +34,16 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    const { username, password, userType } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      loginApi({ username: username.trim(), password: password, userType: userType }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.token)
+        console.log(response)
+        // commit('SET_TOKEN', data.token)
+        // 模拟数据，以后会做分配权限的对接，再用真实的数据
+        commit('SET_TOKEN', 'admin-token')
+        // 设置用户id
+        setUserId(data.userId)
         setToken(data.token)
         resolve()
       }).catch(error => {

@@ -41,4 +41,15 @@ export const editUserApi = async(para) => {
 export const deleteUserApi = async(para) => {
   return await http.delete('/api/user', para)
 }
-
+// 角色列表
+export const getRoleListApi = async() => {
+  return await http.get('/api/user/roleList')
+}
+// 获取角色
+export const getRoleApi = async(para) => {
+  return await http.get('/api/user/role', para)
+}
+// 登录
+export const loginApi = async(para) => {
+  return await http.post('/api/login/login', para)
+}
