@@ -96,7 +96,7 @@ export default {
     // 登录提交
     onSubmit() {
       // 表单验证
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           // 调用 store模块 -> user模块 -> login()方法
           this.$store.dispatch('user/login', this.addModel).then(() => {

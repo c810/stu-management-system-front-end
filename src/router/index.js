@@ -61,7 +61,7 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  {
+  /* {
     path: '/system',
     alwaysShow: true, // 如果一个大类里面只有一个子类,false则不会显示层级关系
     component: Layout,
@@ -169,7 +169,7 @@ export const asyncRoutes = [
         meta: { title: '开课管理', icon: 'table' }
       }
     ]
-  },
+  }, */
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

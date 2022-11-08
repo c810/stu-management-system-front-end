@@ -19,3 +19,7 @@ export const editMenuApi = async(para) => {
 export const deleteMenuApi = async(para) => {
   return await http.delete('/api/menu', para)
 }
+// 获取菜单数据
+export const getMenuListApi = async(para) => {
+  return await http.get('/api/login/getMenuList', para)
+}

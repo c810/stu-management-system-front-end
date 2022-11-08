@@ -59,7 +59,7 @@
         </el-form-item>
       </el-form>
       <!-- 表格 -->
-      <el-table :height="tableHeight" :data="tableList" border stripe>
+      <el-table :data="tableList" border stripe>
         <el-table-column prop="className" label="班级"/>
         <el-table-column prop="courseName" label="课程"/>
         <el-table-column prop="courseYear" label="开课年份"/>

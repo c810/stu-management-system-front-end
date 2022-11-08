@@ -9,13 +9,13 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+/* export function getInfo(token) {
   return request({
     url: '/vue-admin-template/user/info',
     method: 'get',
     params: { token }
   })
-}
+} */
 
 export function logout() {
   return request({
@@ -52,4 +52,8 @@ export const getRoleApi = async(para) => {
 // 登录
 export const loginApi = async(para) => {
   return await http.post('/api/login/login', para)
+}
+// 获取用户权限信息
+export const getInfoApi = async(para) => {
+  return await http.get('/api/login/getInfo', para)
 }

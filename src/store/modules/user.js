@@ -1,5 +1,5 @@
-import { logout, getInfo, loginApi } from '@/api/user'
-import { getToken, setToken, removeToken, setUserId } from '@/utils/auth'
+import { logout, getInfoApi, loginApi } from '@/api/user'
+import { getToken, setToken, removeToken, setUserId, setUserType, getUserId, getUserType } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -41,12 +41,13 @@ const actions = {
       loginApi({ username: username.trim(), password: password, userType: userType }).then(response => {
         const { data } = response
         console.log(response)
-        // commit('SET_TOKEN', data.token)
+        commit('SET_TOKEN', data.token)
         // 模拟数据，以后会做分配权限的对接，再用真实的数据
-        commit('SET_TOKEN', 'admin-token')
+        // commit('SET_TOKEN', 'admin-token')
         // 设置用户id
         setUserId(data.userId)
         setToken(data.token)
+        setUserType(data.userType)
         resolve()
       }).catch(error => {
         reject(error)
@@ -57,10 +58,14 @@ const actions = {
   // get user info 获取用户的权限信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      const para = {
+        userId: getUserId(),
+        userType: getUserType()
+      }
       // 对接自己的接口
-      getInfo(state.token).then(response => {
+      getInfoApi(para).then(response => {
         const { data } = response
-
+        console.log(data)
         if (!data) {
           reject('Verification failed, please Login again.')
         }

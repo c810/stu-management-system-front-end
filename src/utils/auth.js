@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'vue_admin_template_token'
 const userIdKey = 'userId'
+const userTypeKey = 'userType'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -33,4 +34,12 @@ export function removeUserId() {
 // 清空session
 export function clearSession() {
   return sessionStorage.clear()
+}
+
+export function getUserType() {
+  return Cookies.get(userTypeKey)
+}
+
+export function setUserType(userType) {
+  return Cookies.set(userTypeKey, userType)
 }
