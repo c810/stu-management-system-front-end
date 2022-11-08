@@ -91,33 +91,33 @@
                 <el-input v-model="addModel.icon"/>
               </el-form-item>
             </el-col>
-            <el-col v-if="addModel.type === '1'" :span="12" :offset="0">
+            <el-col v-if="addModel.type !== '2'" :span="12" :offset="0">
               <el-form-item prop="name" label="路由名称">
                 <el-input v-model="addModel.name"/>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-if="addModel.type === '1'">
-            <el-col :span="12" :offset="0">
-              <el-form-item prop="path" label="路由地址">
-                <el-input v-model="addModel.path"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" :offset="0">
-              <el-form-item prop="url" label="组件路径">
-                <el-input v-model="addModel.url"/>
-              </el-form-item>
-            </el-col>
-          </el-row>
           <el-row>
+            <el-col :span="12" :offset="0">
+              <el-form-item label="菜单序号">
+                <el-input v-model="addModel.orderNum"/>
+              </el-form-item>
+            </el-col>
             <el-col :span="12" :offset="0">
               <el-form-item label="权限字段">
                 <el-input v-model="addModel.code"/>
               </el-form-item>
             </el-col>
-            <el-col :span="12" :offset="0">
-              <el-form-item label="菜单序号">
-                <el-input v-model="addModel.orderNum"/>
+          </el-row>
+          <el-row >
+            <el-col v-if="addModel.type !== '2'" :span="12" :offset="0">
+              <el-form-item prop="path" label="路由地址">
+                <el-input v-model="addModel.path"/>
+              </el-form-item>
+            </el-col>
+            <el-col v-if="addModel.type === '1'" :span="12" :offset="0">
+              <el-form-item prop="url" label="组件路径">
+                <el-input v-model="addModel.url"/>
               </el-form-item>
             </el-col>
           </el-row>

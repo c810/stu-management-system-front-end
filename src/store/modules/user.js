@@ -32,10 +32,12 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // user login 登录
   login({ commit }, userInfo) {
+    // 解构传来的参数
     const { username, password, userType } = userInfo
     return new Promise((resolve, reject) => {
+      // 调用 api -> user.js -> loginApi()
       loginApi({ username: username.trim(), password: password, userType: userType }).then(response => {
         const { data } = response
         console.log(response)
@@ -52,9 +54,10 @@ const actions = {
     })
   },
 
-  // get user info
+  // get user info 获取用户的权限信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      // 对接自己的接口
       getInfo(state.token).then(response => {
         const { data } = response
 
@@ -68,7 +71,7 @@ const actions = {
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
-
+        // 把返回的信息存放到vuex里面
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)

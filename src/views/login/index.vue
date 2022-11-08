@@ -22,7 +22,7 @@
           <i class="el-icon-key"/>
         </span>
         <span class="input-deep">
-          <el-input v-model="addModel.password" placeholder="请输入密码" />
+          <el-input type="password" v-model="addModel.password" placeholder="请输入密码" />
         </span>
       </el-form-item>
       <el-form-item prop="userType">
@@ -93,10 +93,15 @@ export default {
     }
   },
   methods: {
+    // 登录提交
     onSubmit() {
+      // 表单验证
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
+          // 调用 store模块 -> user模块 -> login()方法
           this.$store.dispatch('user/login', this.addModel).then(() => {
+            // 登录成功,返回数据,不会立即进入首页,需要做权限验证
+            // 权限验证通过,才会进入首页
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           })

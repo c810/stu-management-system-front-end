@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <el-form ref="searchRef" :model="listPara" :rules="rules" label-width="80px" :inline="true" size="small">
+    <el-form ref="searchRef" :model="addModel" :rules="rules" label-width="80px" :inline="true" size="small">
       <el-form-item>
         <el-input v-model="searchForm.collegeName" placeholder="请输入学院名称"/>
       </el-form-item>

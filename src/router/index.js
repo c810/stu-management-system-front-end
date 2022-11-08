@@ -91,7 +91,7 @@ export const asyncRoutes = [
   },
   {
     path: '/college',
-    alwaysShow: true, // 如果一个大类里面只有一个子类,false则不会显示层级关系
+    alwaysShow: true,
     component: Layout,
     // redirect: '/example/table', (重定向)
     name: 'college',
@@ -114,6 +114,59 @@ export const asyncRoutes = [
         name: 'classList',
         component: () => import('@/views/college/classList'),
         meta: { title: '班级管理', icon: 'tree' }
+      }
+    ]
+  },
+  {
+    path: '/stuRoot',
+    alwaysShow: true, // 如果一个大类里面只有一个子类,false则不会显示层级关系
+    component: Layout,
+    // redirect: '/example/table', (重定向)
+    name: 'stuRoot',
+    meta: { title: '学生管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: '/stuList',
+        name: 'stuList',
+        component: () => import('@/views/student/stuList'),
+        meta: { title: '学生列表', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/teacherRoot',
+    alwaysShow: true,
+    component: Layout,
+    // redirect: '/example/table', (重定向)
+    name: 'teacherRoot',
+    meta: { title: '教师管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: '/teacherList',
+        name: 'teacherList',
+        component: () => import('@/views/teacher/teacherList'),
+        meta: { title: '教师列表', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/courseRoot',
+    alwaysShow: true,
+    component: Layout,
+    name: 'courseRoot',
+    meta: { title: '课程管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: '/courseList',
+        name: 'courseList',
+        component: () => import('@/views/course/courseList'),
+        meta: { title: '课程列表', icon: 'table' }
+      },
+      {
+        path: '/setCourse',
+        name: 'setCourse',
+        component: () => import('@/views/course/setCourse'),
+        meta: { title: '开课管理', icon: 'table' }
       }
     ]
   },
