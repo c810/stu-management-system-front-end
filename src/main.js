@@ -15,7 +15,12 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-
+// 权限框架注册全局
+import permission from '@/permission/index.js' // 权限判断指令
+Vue.use(permission)
+// 引入权限检测
+import checkPermission from '@/utils/permission'
+Vue.prototype.$checkPermission = checkPermission
 // 工具的挂载
 // 清空表单
 import resetForm from '@/utils/resetForm'
@@ -26,6 +31,9 @@ Vue.prototype.$myConfirm = myConfirm
 // 对象快速复制
 import objCopy from '@/utils/objCopy'
 Vue.prototype.$objCopy = objCopy
+// 首页数据展示echarts
+import * as echarts from 'echarts';
+Vue.prototype.$echarts = echarts
 
 /**
  * If you don't want to use mock-server

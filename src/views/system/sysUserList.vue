@@ -19,7 +19,7 @@
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
         <el-button icon="el-icon-close" style="color: #FF7670;border-color: #FF7670;" @click="resetBtn">重置</el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:sysUserList:add']" type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格
@@ -30,10 +30,10 @@
       <el-table-column prop="nickName" label="姓名"/>
       <el-table-column prop="phone" label="电话"/>
       <el-table-column prop="email" label="邮箱"/>
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column v-if="$checkPermission(['sys:sysUserList:edit','sys:sysUserList:delete'])" label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:sysUserList:edit']" type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:sysUserList:delete']" type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

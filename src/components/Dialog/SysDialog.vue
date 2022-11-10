@@ -6,6 +6,7 @@
     :width="width + 'px'"
     :before-close="onClose"
     :close-on-click-modal="false"
+    append-to-body
   >
     <div class="container" :style="{height: height + 'px'}">
       <!-- 使用插槽展示内容(在父组件中使用) -->

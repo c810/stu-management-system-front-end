@@ -1,5 +1,5 @@
 import { logout, getInfoApi, loginApi } from '@/api/user'
-import { getToken, setToken, removeToken, setUserId, setUserType, getUserId, getUserType } from '@/utils/auth'
+import { getToken, setToken, removeToken, setUserId, setUserType, getUserId, getUserType, clearSession } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
@@ -79,7 +79,8 @@ const actions = {
         // 把返回的信息存放到vuex里面
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        // commit('SET_AVATAR', avatar)
+        commit('SET_AVATAR', require('@/assets/images/user-logo.jpg'))
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -88,12 +89,27 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  /* logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  }, */
+  logout({ commit, state, dispatch }) {
+    return new Promise((resolve, reject) => {
+      logout(state.token).then(() => {
+        removeToken() // must remove  token  first
+        resetRouter()
+        commit('RESET_STATE')
+        // 清空tagsview里面的数据
+        dispatch('tagsView/delAllViews', {}, { root: true })
+        clearSession()
         resolve()
       }).catch(error => {
         reject(error)

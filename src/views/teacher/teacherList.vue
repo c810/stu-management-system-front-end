@@ -8,7 +8,7 @@
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
         <el-button style="color:#FF7670;border-color: #FF7670;" icon="el-icon-close" @click="resetBtn">重置</el-button>
-        <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:teacherList:add']" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -22,10 +22,12 @@
           <el-tag v-if="scope.row.sex === '1'" type="danger" size="small">女</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="220">
+      <el-table-column v-if="$checkPermission(['sys:teacherList:edit','sys:teacherList:delete','sys:teacherList:reset'])" label="操作" align="center" width="320">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="small" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:teacherList:edit']" type="primary" icon="el-icon-edit" size="small" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:teacherList:reset']" type="warning" size="small" icon="el-icon-delete" @click="resetPwdBtn(scope.row)">重置密码
+          </el-button>
+          <el-button v-permission="['sys:teacherList:delete']" type="danger" icon="el-icon-delete" size="small" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -114,7 +116,7 @@
 </template>
 
 <script>
-import { addApi, listApi, editApi, deleteApi, getRoleApi, getRoleByIdApi } from '@/api/teacher'
+import { addApi, listApi, editApi, deleteApi, getRoleApi, getRoleByIdApi, resetPasswordApi } from '@/api/teacher'
 import SysDialog from '@/components/Dialog/SysDialog.vue'
 
 export default {
@@ -197,6 +199,21 @@ export default {
     })
   },
   methods: {
+    // 重置密码按钮
+    async resetPwdBtn(row) {
+      // 信息确认
+      const confirm = await this.$myConfirm('确定重置密码吗?【重置后密码为123456】')
+      if (confirm) {
+        const para = {
+          teacherId: row.teacherId,
+          password: '123456'
+        }
+        const res = await resetPasswordApi(para)
+        if (res && res.code === 200) {
+          this.$message.success(res.msg)
+        }
+      }
+    },
     currentChange(val) {
       this.searchModel.currentPage = val
       this.getList()

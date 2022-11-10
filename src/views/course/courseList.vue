@@ -8,7 +8,7 @@
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
         <el-button style="color:#FF7670;border-color: #FF7670;" icon="el-icon-close" @click="resetBtn">重置</el-button>
-        <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:courseList:add']" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -21,12 +21,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="courseDesc" label="课程描述"/>
-      <el-table-column label="操作" align="center" width="400">
+      <el-table-column v-if="$checkPermission(['sys:courseList:edit','sys:courseList:delete','sys:courseList:reset','sys:courseList:removeTeacher'])" label="操作" align="center" width="400">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="small" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="success" icon="el-icon-edit" size="small" @click="assignBtn(scope.row)">分配教师</el-button>
-          <el-button v-if="scope.row.teacherId" type="warning" icon="el-icon-edit" size="small" @click="removeBtn(scope.row)">解除教师</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:courseList:edit']" type="primary" icon="el-icon-edit" size="small" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:courseList:assignTeacher']" type="success" icon="el-icon-edit" size="small" @click="assignBtn(scope.row)">分配教师</el-button>
+          <el-button v-permission="['sys:courseList:removeTeacher']" v-if="scope.row.teacherId" type="warning" icon="el-icon-edit" size="small" @click="removeBtn(scope.row)">解除教师</el-button>
+          <el-button v-permission="['sys:courseList:delete']" type="danger" icon="el-icon-delete" size="small" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

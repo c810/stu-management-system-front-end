@@ -3,7 +3,7 @@
     <!-- 新增按钮 -->
     <el-form size="small">
       <el-form-item>
-        <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:sysMenuList:add']" type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -33,10 +33,11 @@
       <el-table-column prop="path" label="路由地址"/>
       <el-table-column prop="url" label="组件路径"/>
       <el-table-column prop="code" label="权限字段"/>
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column prop="orderNum" label="序号"/>
+      <el-table-column v-if="$checkPermission(['sys:sysMenuList:edit','sys:sysMenuList:delete'])" label="操作" align="center" width="180">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:sysMenuList:edit']" type="primary" size="small" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:sysMenuList:delete']" type="danger" size="small" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

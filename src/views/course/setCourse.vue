@@ -55,7 +55,7 @@
           <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
           <el-button icon="el-icon-close" style="color: #FF7670;border-color: #FF7670;" @click="resetBtn">重置
           </el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+          <el-button v-permission="['sys:setCourse:assignCourse']" type="primary" icon="el-icon-plus" @click="addBtn">分配课程</el-button>
         </el-form-item>
       </el-form>
       <!-- 表格 -->
@@ -69,7 +69,7 @@
             <el-tag v-if="scope.row.type === '1'" type="warning" size="small">秋季</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="100">
+        <el-table-column v-permission="['sys:setCourse:delete']" label="操作" align="center" width="100">
           <template slot-scope="scope">
             <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
           </template>

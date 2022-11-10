@@ -57,3 +57,7 @@ export const loginApi = async(para) => {
 export const getInfoApi = async(para) => {
   return await http.get('/api/login/getInfo', para)
 }
+// 修改密码
+export const updatePasswordApi = async(para) => {
+  return await http.post('/api/login/updatePassword', para)
+}

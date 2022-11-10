@@ -27,3 +27,15 @@ export const getRoleApi = async() => {
 export const getRoleByIdApi = async(para) => {
   return await http.get('/api/teacher/getRoleById', para)
 }
+// 教授课程
+export const getCourseListApi = async(para) => {
+  return await http.get('/api/teacher/getCourseList', para)
+}
+// 导入成绩
+export const importStuInfoApi = async(para) => {
+  return await http.upload('/api/teacher/importStuInfo', para)
+}
+// 重置密码
+export const resetPasswordApi = async(para) => {
+  return await http.post('/api/teacher/resetPassword', para)
+}

@@ -31,3 +31,23 @@ export const deleteApi = async(para) => {
 export const getRoleByIdApi = async(para) => {
   return await http.get('/api/student/getRoleId', para)
 }
+// 查询学生课程
+export const getCourseListApi = async(para) => {
+  return await http.get('/api/student/getCourseList', para)
+}
+// 重置密码
+export const resetPasswordApi = async(para) => {
+  return await http.post('/api/student/resetPassword', para)
+}
+// 导入学生信息
+export const importStuInfoApi = async(para) => {
+  return await http.upload('/api/student/importStuInfo', para)
+}
+// 首页学生统计
+export const getStuCountApi = async() => {
+  return await http.get('/api/student/getStuCount', null)
+}
+// 热门专业统计
+export const getHotMajorApi = async() => {
+  return await http.get('/api/student/getHotMajor', null)
+}

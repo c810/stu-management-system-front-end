@@ -60,11 +60,45 @@
         <el-form-item label="学生姓名">
           <el-input v-model="searchModel.stuName" placeholder="请输入学生姓名"/>
         </el-form-item>
+        <el-form-item prop="intoTime" label="入学时间">
+          <el-date-picker
+            v-model="searchModel.intoTime"
+            type="month"
+            value-format="yyyy-MM"
+            placeholder="请选择入学时间"
+          >
+          </el-date-picker>
+        </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
           <el-button icon="el-icon-close" style="color: #FF7670;border-color: #FF7670;" @click="resetBtn">重置
           </el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+          <el-button v-permission="['sys:stuList:add']" type="primary" icon="el-icon-plus" @click="addBtn">新增
+          </el-button>
+          <el-button type="success" size="small" icon="el-icon-bottom"
+                     @click="exportStu()"
+          >
+            下载模板
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-upload
+            action=""
+            :auto-upload="true"
+            :multiple="false"
+            :show-file-list="false"
+            :http-request="importStu"
+            :file-list="fileList"
+          >
+            <el-button type="warning" size="small" icon="el-icon-plus">导入学生</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="small" icon="el-icon-bottom"
+                     @click="getStuInfo()"
+          >
+            导出学生
+          </el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -83,10 +117,22 @@
       <el-table-column prop="collegeName" label="学院"/>
       <el-table-column prop="majorName" label="专业"/>
       <el-table-column prop="className" label="班级"/>
-      <el-table-column label="操作" align="center" width="180">
+      <el-table-column v-if="$checkPermission(['sys:stuList:edit','sys:stuList:delete','sys:stuList:reset'])"
+                       label="操作" align="center" width="320"
+      >
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:stuList:edit']" type="primary" size="small" icon="el-icon-edit"
+                     @click="editBtn(scope.row)"
+          >编辑
+          </el-button>
+          <el-button v-permission="['sys:stuList:reset']" type="warning" size="small" icon="el-icon-delete"
+                     @click="resetPwdBtn(scope.row)"
+          >重置密码
+          </el-button>
+          <el-button v-permission="['sys:stuList:delete']" type="danger" size="small" icon="el-icon-delete"
+                     @click="deleteBtn(scope.row)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -248,7 +294,9 @@ import {
   editApi,
   deleteApi,
   getByIdApi,
-  getRoleByIdApi
+  getRoleByIdApi,
+  resetPasswordApi,
+  importStuInfoApi
 } from '@/api/student'
 
 export default {
@@ -257,6 +305,7 @@ export default {
   },
   data() {
     return {
+      fileList: [],
       // 搜索班级数据
       searchClassList: [],
       // 搜索专业数据
@@ -352,6 +401,7 @@ export default {
       },
       // 搜索绑定数据
       searchModel: {
+        intoTime: '',
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -372,10 +422,80 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.tableHeight = window.innerHeight - 220
+      this.tableHeight = window.innerHeight - 320
     })
   },
   methods: {
+    // 导入学生
+    async importStu(param) {
+      // 判断是否选择了班级
+      if (!this.searchModel.classId) {
+        this.$message.warning('请选择班级!')
+        return false
+      }
+      // 判断是否选择了入学年份
+      if (!this.searchModel.intoTime) {
+        this.$message.warning('请选择入学年份!')
+        return false
+      }
+      const file = param.file
+      // 通过split方法和fileArr方法获取到文件的后缀名
+      const fileArr = file.name.split('.')
+      const suffix = fileArr[fileArr.length - 1]
+      // 只能导入.xls和.xlsx文件
+      if (!/(xls|xlsx)/i.test(suffix)) {
+        this.$message.warning('文件格式不正确')
+        return false
+      }
+      // 不能导入大小超过2Mb的文件
+      if (file.size > 2 * 1024 * 1024) {
+        this.$message('文件过大,请上传小于2MB的文件〜')
+        return false
+      }
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('classId', this.searchModel.classId)
+      formData.append('intoTime', this.searchModel.intoTime)
+      const res = await importStuInfoApi(formData)
+      if (res && res.code === 200) {
+        this.$message.success(res.msg)
+        this.getList()
+      }
+    },
+    // 导出学生
+    getStuInfo() {
+      // 判断是否选择了班级
+      if (!this.searchModel.classId) {
+        this.$message.warning('请选择班级!')
+        return false
+      }
+      const abtn = document.createElement('a')
+      // 文件id
+      abtn.href = process.env.VUE_APP_BASE_API_PRO + '/api/student/exportStuInfo?classId=' + this.searchModel.classId
+      abtn.click()
+    },
+    // 下载模板
+    exportStu() {
+      const abtn = document.createElement('a')
+      // 文件id
+      abtn.href = process.env.VUE_APP_BASE_API_PRO + '/api/student/importStuTemplate'
+      abtn.click()
+    },
+    // 重置密码按钮
+    async resetPwdBtn(row) {
+      // 信息确认
+      const confirm = await this.$myConfirm('确定重置密码吗?【重置后密码为123456】')
+      if (confirm) {
+        const para = {
+          stuId: row.stuId,
+          password: '123456'
+        }
+        const res = await resetPasswordApi(para)
+        if (res && res.code === 200) {
+          this.$message.success(res.msg)
+        }
+      }
+    },
     // 搜索选择班级时触发(解决select清空之后不能选择的问题)
     searchClassChange() {
       this.$forceUpdate()
@@ -553,6 +673,7 @@ export default {
       this.searchModel.className = ''
       this.searchModel.stuName = ''
       this.searchModel.currentPage = 1
+      this.searchModel.intoTime = ''
       this.getList()
     },
     // 新增按钮

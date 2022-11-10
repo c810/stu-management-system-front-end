@@ -9,18 +9,25 @@
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
         <el-button icon="el-icon-close" style="color: #FF7670;border-color: #FF7670;" @click="resetBtn">重置</el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:sysRoleList:add']" type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
     <el-table :height="tableHeight" :data="tableData" border stripe>
       <el-table-column prop="roleName" label="角色名称"/>
-      <el-table-column prop="remark" label="备注"/>
-      <el-table-column label="操作" align="center" width="300">
+      <el-table-column prop="roleType" label="类型">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button type="primary" size="small" icon="el-icon-edit" @click="assignBtn(scope.row)">分配权限</el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-tag v-if="scope.row.roleType === '1'" type="danger" size="normal">系统用户</el-tag>
+          <el-tag v-if="scope.row.roleType === '2'" type="success" size="normal">学生</el-tag>
+          <el-tag v-if="scope.row.roleType === '3'" type="warning" size="normal">教师</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remark" label="备注"/>
+      <el-table-column v-if="$checkPermission(['sys:sysRoleList:edit','sys:sysRoleList:assignRole','sys:sysRoleList:delete'])" label="操作" align="center" width="300">
+        <template slot-scope="scope">
+          <el-button v-permission="['sys:sysRoleList:edit']" type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
+          <el-button v-permission="['sys:sysRoleList:assignRole']" type="primary" size="small" icon="el-icon-edit" @click="assignBtn(scope.row)">分配权限</el-button>
+          <el-button v-permission="['sys:sysRoleList:delete']" type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -221,6 +228,7 @@ export default {
       const res = await assignRoleApi(para)
       if (res && res.code === 200) {
         // 设置树的数据
+        console.log(res)
         this.assignTreeData = res.data.menuList
         this.assignTreeChecked = res.data.checkList
       }
@@ -256,7 +264,7 @@ export default {
       if (res && res.code === 200) {
         // 设置表格数据
         this.tableData = res.data.records
-        this.listPara.total = res.data.total // 怎么获取的??
+        this.listPara.total = res.data.total
       }
     },
     // 搜索按钮
@@ -333,10 +341,10 @@ export default {
             this.$message({ type: 'success', message: res.msg })
             // 刷新列表
             this.getList()
+            this.dialog.visible = false
           }
         }
       })
-      this.dialog.visible = false
     }
   }
 }

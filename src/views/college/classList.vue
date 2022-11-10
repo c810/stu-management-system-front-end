@@ -14,7 +14,7 @@
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
         <el-button icon="el-icon-close" style="color: #ff7670" @click="resetBtn">重置</el-button>
-        <el-button icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:classList:add']" icon="el-icon-plus" type="primary" @click="addBtn">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -24,9 +24,10 @@
       <el-table-column prop="collegeName" label="所属学院" />
       <el-table-column prop="majorName" label="所属专业" />
       <el-table-column prop="orderNum" label="序号" />
-      <el-table-column label="操作" align="center" width="220">
+      <el-table-column v-if="$checkPermission(['sys:classList:edit','sys:classList:delete'])" label="操作" align="center" width="220">
         <template slot-scope="scope">
           <el-button
+            v-permission="['sys:classList:edit']"
             type="primary"
             icon="el-icon-edit"
             size="small"
@@ -34,6 +35,7 @@
           >编辑
           </el-button>
           <el-button
+            v-permission="['sys:classList:delete']"
             type="danger"
             icon="el-icon-delete"
             size="small"
