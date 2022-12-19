@@ -19,7 +19,8 @@
       <el-form-item>
         <el-button icon="el-icon-search" @click="searchBtn">搜索</el-button>
         <el-button icon="el-icon-close" style="color: #FF7670;border-color: #FF7670;" @click="resetBtn">重置</el-button>
-        <el-button v-permission="['sys:sysUserList:add']" type="primary" icon="el-icon-plus" @click="addBtn">新增</el-button>
+        <el-button v-permission="['sys:sysUserList:add']" type="primary" icon="el-icon-plus" @click="addBtn">新增
+        </el-button>
       </el-form-item>
     </el-form>
     <!-- 表格
@@ -30,10 +31,18 @@
       <el-table-column prop="nickName" label="姓名"/>
       <el-table-column prop="phone" label="电话"/>
       <el-table-column prop="email" label="邮箱"/>
-      <el-table-column v-if="$checkPermission(['sys:sysUserList:edit','sys:sysUserList:delete'])" label="操作" align="center" width="180">
+      <el-table-column v-if="$checkPermission(['sys:sysUserList:edit','sys:sysUserList:delete'])" label="操作"
+                       align="center" width="180"
+      >
         <template slot-scope="scope">
-          <el-button v-permission="['sys:sysUserList:edit']" type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button v-permission="['sys:sysUserList:delete']" type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
+          <el-button v-permission="['sys:sysUserList:edit']" type="primary" size="small" icon="el-icon-edit"
+                     @click="editBtn(scope.row)"
+          >编辑
+          </el-button>
+          <el-button v-permission="['sys:sysUserList:delete']" type="danger" size="small" icon="el-icon-delete"
+                     @click="deleteBtn(scope.row)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,7 +79,6 @@
         <el-form
           ref="addRef"
           :model="addModel"
-          :rules="rules"
           label-width="80px"
           size="small"
           style="margin-right: 40px"
@@ -81,24 +89,24 @@
           <el-row>
             <el-col :span="12" :offset="0">
               <!-- 普通div -->
-              <el-form-item prop="nickName" label="姓名">
+              <el-form-item prop="nickName" :rules="Rules.isNull" label="姓名">
                 <el-input v-model="addModel.nickName"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="phone" label="电话">
+              <el-form-item prop="phone" :rules="Rules.phone" label="电话">
                 <el-input v-model="addModel.phone"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item label="邮箱">
+              <el-form-item prop="email" :rules="Rules.email" label="邮箱">
                 <el-input v-model="addModel.email"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="sex" label="性别">
+              <el-form-item prop="sex" :rules="Rules.sex" label="性别">
                 <el-radio-group v-model="addModel.sex">
                   <el-radio :label="'0'">男</el-radio>
                   <el-radio :label="'1'">女</el-radio>
@@ -108,27 +116,28 @@
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="roleId" label="角色">
-                <el-select v-model="addModel.roleId" placeholder="请选择角色">
+              <el-form-item prop="roleId" :rules="Rules.select" label="角色">
+                <el-select v-model="addModel.roleId" placeholder="">
                   <el-option
                     v-for="item in roleList"
                     :key="item.roleId"
                     :label="item.roleName"
                     :value="item.roleId"
+                    :disabled="item.disabled"
                   >
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="username" label="账户">
+              <el-form-item prop="username" :rules="Rules.isNull" label="账户">
                 <el-input v-model="addModel.username"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col v-if="addModel.type === '0'" :span="12" :offset="0">
-              <el-form-item prop="password" label="密码">
+              <el-form-item prop="password" :rules="Rules.password" label="密码">
                 <el-input v-model="addModel.password"/>
               </el-form-item>
             </el-col>
@@ -141,9 +150,10 @@
 
 <script>
 // 引入获取用户列表
-import { getListApi, editUserApi, addUserApi, deleteUserApi, getRoleListApi, getRoleApi } from '@/api/user'
+import { getListApi, editUserApi, addUserApi, deleteUserApi, getSysUserRoleApi, getRoleApi } from '@/api/user'
 // 引入弹框组件
 import SysDialog from '@/components/Dialog/SysDialog'
+import Rules from '@/utils/rules'
 
 export default {
   // 注册组件
@@ -152,52 +162,7 @@ export default {
   },
   data() {
     return {
-      // 表单验证规则
-      rules: {
-        roleId: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请选择角色'
-          }
-        ],
-        nickName: [
-          {
-            // trigger: 'change', // 改变时再验证
-            trigger: 'blur', // 失去焦点时验证
-            required: true, // 必须要验证
-            message: '请输入姓名'
-          }
-        ],
-        phone: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请输入电话'
-          }
-        ],
-        sex: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请选择性别'
-          }
-        ],
-        username: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请输入账户'
-          }
-        ],
-        password: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请输入密码'
-          }
-        ]
-      },
+      Rules,
       // 表单绑定的数据
       addModel: {
         roleId: '',
@@ -241,16 +206,24 @@ export default {
   },
   created() {
     this.getList()
-    this.getRoleList()
+    // this.getRoleList()
+    this.getSysUserRole()
   },
   methods: {
+    // 获取管理员角色
+    async getSysUserRole() {
+      const res = await getSysUserRoleApi()
+      if (res && res.code === 200) {
+        this.roleList[0] = res.data
+      }
+    },
     // 获取角色列表
-    async getRoleList() {
+    /* async getRoleList() {
       const res = await getRoleListApi()
       if (res && res.code === 200) {
         this.roleList = res.data
       }
-    },
+    }, */
     // 获取列表
     async getList() {
       const res = await getListApi(this.listPara)
@@ -351,5 +324,8 @@ export default {
 </script>
 
 <style scoped>
-
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
 </style>

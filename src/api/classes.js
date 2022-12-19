@@ -27,3 +27,7 @@ export const deleteApi = async(para) => {
 // export const getMajorListsApi = async(para) => {
 //   return await http.get('/api/class/getMajorListByCollegeId', para)
 // }
+// 根据id查名称
+export const getClassNameByIdApi = async(para) => {
+  return await http.get('/api/class/getClassNameById', para)
+}

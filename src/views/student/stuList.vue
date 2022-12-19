@@ -2,18 +2,7 @@
   <el-main>
     <el-form :model="searchModel" :inline="true" size="small">
       <el-row>
-        <el-form-item label="模糊查询">
-          <el-input v-model="searchModel.collegeName" placeholder="请输入学院名称"/>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="searchModel.majorName" placeholder="请输入专业名称"/>
-        </el-form-item>
-        <el-form-item>
-          <el-input v-model="searchModel.className" placeholder="请输入班级名称"/>
-        </el-form-item>
-      </el-row>
-      <el-row>
-        <el-form-item label="所属学院">
+        <el-form-item label="学院">
           <el-select
             v-model="searchModel.collegeId"
             placeholder="请选择学院"
@@ -27,7 +16,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属专业">
+        <el-form-item label="专业">
           <el-select
             v-model="searchModel.majorId"
             placeholder="请选择专业"
@@ -41,7 +30,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="所属班级">
+        <el-form-item label="班级">
           <el-select
             v-model="searchModel.classId"
             placeholder="请选择班级"
@@ -54,6 +43,15 @@
               :value="item.classId"
             />
           </el-select>
+        </el-form-item>
+        <el-form-item label="模糊">
+          <el-input v-model="searchModel.collegeName" placeholder="请输入学院名称"/>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchModel.majorName" placeholder="请输入专业名称"/>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="searchModel.className" placeholder="请输入班级名称"/>
         </el-form-item>
       </el-row>
       <el-row>
@@ -167,7 +165,7 @@
         >
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="collegeId" label="所属学院">
+              <el-form-item prop="collegeId" :rules="Rules.select" label="所属学院">
                 <el-select
                   v-model="addModel.collegeId"
                   placeholder="请选择学院"
@@ -183,7 +181,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="majorId" label="所属专业">
+              <el-form-item prop="majorId" :rules="Rules.select" label="所属专业">
                 <el-select
                   v-model="addModel.majorId"
                   placeholder="请选择专业"
@@ -201,7 +199,7 @@
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="classId" label="所属班级">
+              <el-form-item prop="classId" :rules="Rules.select" label="所属班级">
                 <el-select
                   v-model="addModel.classId"
                   placeholder="请选择班级"
@@ -216,7 +214,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="roleId" label="角色">
+              <el-form-item prop="roleId" :rules="Rules.select" label="角色">
                 <el-select
                   v-model="addModel.roleId"
                   placeholder="请选择角色"
@@ -233,12 +231,12 @@
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="stuName" label="姓名">
+              <el-form-item prop="stuName" :rules="Rules.isNull" label="姓名">
                 <el-input v-model="addModel.stuName" placeholder="请输入姓名"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="sex" label="性别">
+              <el-form-item prop="sex" :rules="Rules.sex" label="性别">
                 <el-radio-group v-model="addModel.sex">
                   <el-radio :label="'0'">男</el-radio>
                   <el-radio :label="'1'">女</el-radio>
@@ -248,12 +246,12 @@
           </el-row>
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="phone" label="电话">
+              <el-form-item prop="phone" :rules="Rules.phone" label="电话">
                 <el-input v-model="addModel.phone" placeholder="请输入电话"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="intoTime" label="入学时间">
+              <el-form-item prop="intoTime" :rules="Rules.time" label="入学时间">
                 <el-date-picker
                   v-model="addModel.intoTime"
                   type="month"
@@ -267,12 +265,12 @@
           <el-row>
             <el-col :span="12" :offset="0">
               <el-form-item prop="stuNum" label="学号">
-                <el-input v-model="addModel.stuNum" placeholder="请输入学号"/>
+                <el-input v-model="addModel.stuNum" :disabled="true" placeholder="请输入学号"/>
               </el-form-item>
             </el-col>
             <el-col v-if="addModel.type === '0'" :span="12" :offset="0">
               <el-form-item prop="password" label="密码">
-                <el-input v-model="addModel.password" placeholder="请输入密码"/>
+                <el-input v-model="addModel.password" :disabled="true" placeholder="请输入密码"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -298,6 +296,7 @@ import {
   resetPasswordApi,
   importStuInfoApi
 } from '@/api/student'
+import Rules from '@/utils/rules'
 
 export default {
   components: {
@@ -325,58 +324,7 @@ export default {
       // 学院数据
       collegeList: [],
       // 表单验证规则
-      rules: {
-        roleId: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择角色'
-        }],
-        collegeId: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择学院'
-        }],
-        majorId: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择专业'
-        }],
-        classId: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择班级'
-        }],
-        stuName: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入姓名'
-        }],
-        sex: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择性别'
-        }],
-        phone: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入电话'
-        }],
-        intoTime: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择入学年份'
-        }],
-        stuNum: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入学号'
-        }],
-        password: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入密码'
-        }]
-      },
+      Rules,
       // 弹框表单绑定对象
       addModel: {
         type: '',
@@ -422,7 +370,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.tableHeight = window.innerHeight - 320
+      this.tableHeight = window.innerHeight - 270
     })
   },
   methods: {
@@ -455,6 +403,7 @@ export default {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('classId', this.searchModel.classId)
+      formData.append('collegeId', this.searchModel.collegeId)
       formData.append('intoTime', this.searchModel.intoTime)
       const res = await importStuInfoApi(formData)
       if (res && res.code === 200) {
@@ -687,11 +636,16 @@ export default {
       this.addDialog.visible = true
       // 设置新增
       this.addModel.type = '0'
+      this.addModel.password = '123456'
+      this.addModel.stuNum = '自动生成'
     }
   }
 }
 </script>
 
 <style scoped>
-
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
 </style>

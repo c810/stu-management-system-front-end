@@ -1,15 +1,16 @@
+
 // sidebar
-$menuText:#bfcbd9;
-$menuActiveText:#409EFF;
-$subMenuActiveText:#f4f4f5; //https://github.com/ElemeFE/element/issues/12951
+$menuText: #ffffff; // 所有没选中的字体颜色
+$menuActiveText: #ea9928; // "首页"和菜单选中时字体颜色
+$subMenuActiveText: #ffffff; // 目录选中时字体颜色
 
-$menuBg:#304156;
-$menuHover:#263445;
+$menuBg:#9b0d14; // 目录背景颜色
+$menuHover: #77090e; // 目录鼠标悬浮背景颜色
 
-$subMenuBg:#1f2d3d;
-$subMenuHover:#001528;
+$subMenuBg: #b0131a; // 菜单背景颜色
+$subMenuHover: #77090e; // 菜单鼠标悬浮背景颜色
 
-$sideBarWidth: 210px;
+$sideBarWidth: 210px; // 侧边栏宽度
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

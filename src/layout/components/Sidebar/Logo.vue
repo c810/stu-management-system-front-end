@@ -26,7 +26,8 @@ export default {
     return {
       // 侧边栏标题
       title: '教学信息管理系统',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: 'http://rl4wu1zfh.hb-bkt.clouddn.com/logo.png'
+      // logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
     }
   }
 }
@@ -47,7 +48,7 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #2b2f3a;
+  background: #65080d;
   text-align: center;
   overflow: hidden;
 

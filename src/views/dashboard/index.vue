@@ -10,26 +10,26 @@
     >
       <el-col :span="6">
         <div class="show-header" style="background: rgb(45, 183, 245)">
-          <div class="show-num">{{ stuCount }}</div>
           <div class="bottom-text">学生总数</div>
+          <div class="show-num">{{ stuCount }}</div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="show-header" style="background: rgb(237, 64, 20)">
-          <div class="show-num">{{ classCount }}</div>
           <div class="bottom-text">班级总数</div>
+          <div class="show-num">{{ classCount }}</div>
         </div>
       </el-col>
       <el-col :span="6">
-        <div class="show-header">
-          <div class="show-num">{{ majorCount }}</div>
+        <div class="show-header" style="background: rgba(91,187,11,0.91)">
           <div class="bottom-text">专业总数</div>
+          <div class="show-num">{{ majorCount }}</div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="show-header" style="background: rgb(255, 153, 0)">
-          <div class="show-num">{{ teacherCount }}</div>
           <div class="bottom-text">教师总数</div>
+          <div class="show-num">{{ teacherCount }}</div>
         </div>
       </el-col>
     </el-row>
@@ -182,26 +182,36 @@ export default {
 <style lang="scss" scoped>
 .bottom-text {
   bottom: 0;
-  width: 100%;
+  //width: 100%;
   background: rgba(0, 0, 0, 0.1);
-  height: 25px;
-  line-height: 25px;
+  height: 80px;
+  line-height: 80px;
   text-align: center;
-  position: absolute;
+  //position: absolute;
   font-weight: 600;
+  font-size: 20px;
+  float: left;
+  width: 50%;
+  border-radius: 10px;
 }
 
 .show-header {
   background: #00c0ef;
   color: #fff;
   height: 80px;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
+
 }
 
 .show-num {
   font-size: 38px;
   font-weight: 600;
-  padding: 5px;
+  //padding: 5px;
+  float: left;
+  width: 50%;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
 }
 </style>

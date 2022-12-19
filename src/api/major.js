@@ -19,3 +19,7 @@ export const editApi = async(para) => {
 export const deleteApi = async(para) => {
   return await http.delete('/api/major', para)
 }
+// 根据id查名称
+export const getMajorNameByIdApi = async(para) => {
+  return await http.get('/api/major/getMajorNameById', para)
+}

@@ -67,12 +67,12 @@ export default {
 .el-dialog__wrapper {
   // ::v-deep深度查找,从.el-dialog__wrapper开始向下查找,不管有多少层级,找到.el-dialog,定义样式
   ::v-deep .el-dialog { // 弹框上方两圆角
-    border-top-left-radius: 9px !important;
-    border-top-right-radius: 9px !important;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
     .el-dialog__header { // 弹框头上方两圆角
-      border-top-left-radius: 7px !important;
-      border-top-right-radius: 7px !important;
-      background-color: #1890ff;
+      border-top-left-radius: 10px !important;
+      border-top-right-radius: 10px !important;
+      background-color: #9b0d14;
        // 弹框标题样式
       .el-dialog__title {
         color: #fff;

@@ -23,6 +23,7 @@ export default {
       data2: [{
         id: 1,
         label: 'Level one 1',
+        disabled: true,
         children: [{
           id: 4,
           label: 'Level two 1-1',
@@ -37,6 +38,7 @@ export default {
       }, {
         id: 2,
         label: 'Level one 2',
+        disabled: true,
         children: [{
           id: 5,
           label: 'Level two 2-1'
@@ -47,6 +49,7 @@ export default {
       }, {
         id: 3,
         label: 'Level one 3',
+        disabled: true,
         children: [{
           id: 7,
           label: 'Level two 3-1'

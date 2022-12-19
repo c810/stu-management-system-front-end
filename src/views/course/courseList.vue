@@ -21,7 +21,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="courseDesc" label="课程描述"/>
-      <el-table-column v-if="$checkPermission(['sys:courseList:edit','sys:courseList:delete','sys:courseList:reset','sys:courseList:removeTeacher'])" label="操作" align="center" width="400">
+      <el-table-column v-if="$checkPermission(['sys:courseList:edit','sys:courseList:delete','sys:courseList:assignTeacher','sys:courseList:removeTeacher'])" label="操作" align="center" width="400">
         <template slot-scope="scope">
           <el-button v-permission="['sys:courseList:edit']" type="primary" icon="el-icon-edit" size="small" @click="editBtn(scope.row)">编辑</el-button>
           <el-button v-permission="['sys:courseList:assignTeacher']" type="success" icon="el-icon-edit" size="small" @click="assignBtn(scope.row)">分配教师</el-button>
@@ -303,4 +303,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
+</style>

@@ -151,7 +151,7 @@
           <!-- 优化 -->
           <div slot-scope="{ node, data }">
             <!-- 如果没有下级，显示文档图标 -->
-            <span v-if="data.children.length == 0">
+            <span v-if="data.children.length === 0">
               <i style="margin-left: 3px" class="el-icon-document"/>
             </span>
             <!-- 有下级，判断是否展开 -->
@@ -251,38 +251,7 @@ export default {
       // 表格高度
       tableHeight: 0,
       // 表格数据
-      tableData: [{
-        id: 1,
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        id: 2,
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        id: 3,
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄',
-        children: [{
-          id: 31,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          id: 32,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }]
-      }, {
-        id: 4,
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [],
       tableList: [],
       // 上级菜单弹框属性
       parentDialog: {

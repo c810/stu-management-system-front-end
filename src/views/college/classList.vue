@@ -75,7 +75,7 @@
           :inline="false"
           size="small"
         >
-          <el-form-item prop="collegeId" label="所属学院">
+          <el-form-item prop="collegeId" :rules="Rules.select" label="所属学院">
             <el-select
               v-model="addModel.collegeId"
               style="width: 98%"
@@ -90,7 +90,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item prop="majorId" label="所属专业">
+          <el-form-item prop="majorId" :rules="Rules.select" label="所属专业">
             <el-select
               v-model="addModel.majorId"
               style="width: 98%"
@@ -104,10 +104,10 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="班级名称" prop="className">
+          <el-form-item label="班级名称" :rules="Rules.isNull" prop="className">
             <el-input v-model="addModel.className" style="width: 98%" />
           </el-form-item>
-          <el-form-item label="招录年份" prop="classYear">
+          <el-form-item label="招录年份" :rules="Rules.time" prop="classYear">
             <el-date-picker
               v-model="addModel.classYear"
               value-format="yyyy"
@@ -116,7 +116,7 @@
               placeholder="请选择年份"
             />
           </el-form-item>
-          <el-form-item label="序号">
+          <el-form-item prop="orderNum" :rules="Rules.isNum" label="序号">
             <el-input v-model="addModel.orderNum" style="width: 98%" />
           </el-form-item>
         </el-form>
@@ -136,6 +136,7 @@ import {
   editApi,
   deleteApi
 } from '@/api/classes.js'
+import Rules from '@/utils/rules'
 
 export default {
   components: {
@@ -146,36 +147,7 @@ export default {
       // 表格高度
       tableHeight: 0,
       // 表单验证规则
-      rules: {
-        collegeId: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请选择学院'
-          }
-        ],
-        majorId: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请选专业'
-          }
-        ],
-        className: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请填写班级名称'
-          }
-        ],
-        classYear: [
-          {
-            trigger: 'blur',
-            required: true,
-            message: '请选择年份'
-          }
-        ]
-      },
+      Rules,
       // 表单数据
       addModel: {
         type: '',
@@ -350,5 +322,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
 </style>

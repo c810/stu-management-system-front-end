@@ -15,3 +15,7 @@ export const editApi = async(para) => {
 export const deleteApi = async(para) => {
   return await http.delete('/api/college', para)
 }
+// 根据id查名称
+export const getCollegeNameByIdApi = async(para) => {
+  return await http.get('/api/college/getCollegeNameById', para)
+}

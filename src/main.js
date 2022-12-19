@@ -15,26 +15,56 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
 // 权限框架注册全局
 import permission from '@/permission/index.js' // 权限判断指令
 Vue.use(permission)
+
 // 引入权限检测
 import checkPermission from '@/utils/permission'
+
 Vue.prototype.$checkPermission = checkPermission
+
 // 工具的挂载
 // 清空表单
 import resetForm from '@/utils/resetForm'
+
 Vue.prototype.$resetForm = resetForm
+
 // 信息提示框
 import myConfirm from '@/utils/myConfirm'
+
 Vue.prototype.$myConfirm = myConfirm
+
 // 对象快速复制
 import objCopy from '@/utils/objCopy'
+
 Vue.prototype.$objCopy = objCopy
+
 // 首页数据展示echarts
-import * as echarts from 'echarts';
+import * as echarts from 'echarts'
+
 Vue.prototype.$echarts = echarts
 
+// 表单验证
+import rules from './utils/filter_rules'
+
+Vue.prototype.$rules = rules
+
+// 使用封装的登录验证vue组件
+import PuzzleVerification from 'vue-puzzle-verification'
+
+Vue.use(PuzzleVerification)
+
+// md5加密密码
+import md5 from 'js-md5'
+
+Vue.prototype.$md5 = md5
+
+// 下载pdf
+import htmlToPdf from './utils/htmlToPdf'
+
+Vue.use(htmlToPdf)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

@@ -112,4 +112,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
+</style>

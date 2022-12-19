@@ -49,13 +49,12 @@
         <el-form
           :model="addModel"
           ref="addForm"
-          :rules="rules"
           label-width="80px"
           size="small"
           style="margin-right: 40px"
         >
-          <el-form-item prop="collegeId" label="所属学院">
-            <el-select v-model="addModel.collegeId" style="width: 100%" placeholder="请选择">
+          <el-form-item prop="collegeId" :rules="Rules.select" label="所属学院">
+            <el-select v-model="addModel.collegeId" style="width: 100%" placeholder="">
               <el-option
                 v-for="item in collegeList"
                 :key="item.collegeId"
@@ -64,10 +63,10 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="专业名称" prop="majorName">
+          <el-form-item label="专业名称" :rules="Rules.isNull" prop="majorName">
             <el-input v-model="addModel.majorName"/>
           </el-form-item>
-          <el-form-item label="序号">
+          <el-form-item prop="orderNum" :rules="Rules.isNum" label="序号">
             <el-input v-model="addModel.orderNum"/>
           </el-form-item>
         </el-form>
@@ -79,6 +78,7 @@
 <script>
 import SysDialog from '@/components/Dialog/SysDialog'
 import { getCollegeApi, addApi, getListApi, editApi, deleteApi } from '@/api/major'
+import Rules from '@/utils/rules'
 
 export default {
   components: {
@@ -89,18 +89,7 @@ export default {
       tableHeight: 0,
       tableList: [],
       // 表单验证规则
-      rules: {
-        collegeId: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择学院'
-        }],
-        majorName: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入专业名称'
-        }]
-      },
+      Rules,
       // 新增表单绑定的数据对象
       addModel: {
         type: '',
@@ -243,5 +232,8 @@ export default {
 </script>
 
 <style scoped>
-
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
 </style>

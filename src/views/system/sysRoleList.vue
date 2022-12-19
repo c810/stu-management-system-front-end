@@ -26,7 +26,7 @@
       <el-table-column v-if="$checkPermission(['sys:sysRoleList:edit','sys:sysRoleList:assignRole','sys:sysRoleList:delete'])" label="操作" align="center" width="300">
         <template slot-scope="scope">
           <el-button v-permission="['sys:sysRoleList:edit']" type="primary" size="small" icon="el-icon-edit" @click="editBtn(scope.row)">编辑</el-button>
-          <el-button v-permission="['sys:sysRoleList:assignRole']" type="primary" size="small" icon="el-icon-edit" @click="assignBtn(scope.row)">分配权限</el-button>
+          <el-button v-permission="['sys:sysRoleList:assignRole']" type="success" size="small" icon="el-icon-edit" @click="assignBtn(scope.row)">分配权限</el-button>
           <el-button v-permission="['sys:sysRoleList:delete']" type="danger" size="small" icon="el-icon-delete" @click="deleteBtn(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -51,21 +51,22 @@
       @onConfirm="onConfirm"
     >
       <div slot="content">
-        <el-form ref="addRef" :model="addModel" :rules="rules" label-width="80px" size="small">
+        <el-form ref="addRef" :model="addModel" label-width="80px" size="small">
           <el-row>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="roleName" label="角色名称">
+              <el-form-item prop="roleName" :rules="Rules.isNull" label="角色名称">
                 <el-input v-model="addModel.roleName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12" :offset="0">
-              <el-form-item prop="roleType" label="角色类型">
-                <el-select v-model="addModel.roleType" placeholder="请选择">
+              <el-form-item prop="roleType" :rules="Rules.select" label="角色类型">
+                <el-select v-model="addModel.roleType" placeholder="">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
+                    :disabled="item.disabled"
                   />
                 </el-select>
               </el-form-item>
@@ -111,6 +112,7 @@
 import SysDialog from '@/components/Dialog/SysDialog'
 import { getListApi, addRoleApi, editRoleApi, deleteRoleApi, assignRoleApi, saveAssignApi } from '@/api/role'
 import { getUserId } from '@/utils/auth'
+import Rules from '@/utils/rules'
 
 export default {
   // 注册组件
@@ -162,18 +164,7 @@ export default {
         remark: ''
       },
       // 表单验证规则
-      rules: {
-        roleName: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入角色名称'
-        }],
-        roleType: [{
-          trigger: 'blur',
-          required: true,
-          message: '请选择角色类型'
-        }]
-      },
+      Rules,
       // 角色类型
       options: [{
         value: '1',
@@ -351,5 +342,8 @@ export default {
 </script>
 
 <style scoped>
-
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
 </style>

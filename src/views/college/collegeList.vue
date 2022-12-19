@@ -45,16 +45,15 @@
         <el-form
           :model="addModel"
           ref="addForm"
-          :rules="rules"
           label-width="80px"
           size="small"
           :inline="false"
           style="margin-right: 40px"
         >
-          <el-form-item prop="collegeName" label="学院名称">
+          <el-form-item prop="collegeName" :rules="Rules.isNull" label="学院名称">
             <el-input v-model="addModel.collegeName" placeholder="请输入学院名称"></el-input>
           </el-form-item>
-          <el-form-item label="序号">
+          <el-form-item prop="orderNum" :rules="Rules.isNum" label="序号">
             <el-input v-model="addModel.orderNum" placeholder="请输入序号"></el-input>
           </el-form-item>
         </el-form>
@@ -66,6 +65,7 @@
 <script>
 import sysDialog from '@/components/Dialog/SysDialog'
 import { addApi, listApi, editApi, deleteApi } from '@/api/college'
+import Rules from '@/utils/rules'
 
 export default {
   components: {
@@ -85,13 +85,7 @@ export default {
         orderNum: ''
       },
       // (新增或编辑)表单验证规则
-      rules: {
-        collegeName: [{
-          trigger: 'blur',
-          required: true,
-          message: '请输入学院名称'
-        }]
-      },
+      Rules,
       // (新增或编辑)弹框属性
       addDialog: {
         title: '',
@@ -211,5 +205,8 @@ export default {
 </script>
 
 <style scoped>
-
+.el-main >>> .el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: #9b0d14;
+  color: #fff;
+}
 </style>

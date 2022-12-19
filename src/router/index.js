@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import ResetPassword from '@/views/login/ResetPassword'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -53,7 +54,9 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard', affix: true }
     }]
-  }
+  },
+  { path: '/login', name: 'ResetPassword', component: ResetPassword },
+  { path: '@/static/lhpInfoIndex', name: 'lhpInfoIndex' }
 ]
 
 /**
@@ -171,7 +174,10 @@ export const asyncRoutes = [
     ]
   }, */
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
+  // { path: '@/views/login/ResetPassword', name: 'ResetPassword' },
+  { path: '@/views/evaluate/myEvaluate', name: 'myEvaluate' },
+  { path: '@/views/info/stuInfoPdf', name: 'stuInfoPdf' }
 ]
 
 const createRouter = () => new Router({

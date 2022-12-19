@@ -39,3 +39,7 @@ export const importStuInfoApi = async(para) => {
 export const resetPasswordApi = async(para) => {
   return await http.post('/api/teacher/resetPassword', para)
 }
+// 根据教师id查询教师
+export const getTeacherByIdApi = async(para) => {
+  return await http.get('/api/teacher/getTeacherById', para)
+}

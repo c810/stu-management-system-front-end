@@ -36,6 +36,7 @@ export default {
   vertical-align: middle;
   width: 20px;
   height: 20px;
+  fill: #ffffff; /* 修改折叠图标颜色 */
 }
 
 .hamburger.is-active {

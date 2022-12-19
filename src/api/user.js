@@ -61,3 +61,11 @@ export const getInfoApi = async(para) => {
 export const updatePasswordApi = async(para) => {
   return await http.post('/api/login/updatePassword', para)
 }
+// 获取用户
+export const getUserByIdApi = async(para) => {
+  return await http.get('/api/user/getUserById', para)
+}
+// 获取管理员角色
+export const getSysUserRoleApi = async() => {
+  return await http.get('/api/user/getSysUserRole', null)
+}

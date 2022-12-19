@@ -241,6 +241,7 @@ export default {
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
+      border-radius: 7px;
       color: #495060;
       background: #fff;
       padding: 0 8px;
@@ -254,9 +255,9 @@ export default {
         margin-right: 15px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: #9b0d14; /* 面包屑标签颜色 */
         color: #fff;
-        border-color: #42b983;
+        border-color: #9b0d14;
         &::before {
           content: '';
           background: #fff;
